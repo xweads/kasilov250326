@@ -2,5 +2,6 @@
 
 int main() 
 {
+ knk::Vector < int > v;
 
 }
