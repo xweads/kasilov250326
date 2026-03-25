@@ -15,9 +15,9 @@ bool testDefaultVectorIsEmpty(const char ** pname )
 }
 bool testSizeOfNonEmptyVector(const char ** pname ){
     *pname = __func__;
-    Vector< int > v;
-    bool case1 = !v.getSize();
-    return case1;
+    constexpr size_t size = 2;
+    Vector< int > v(size,5);
+    return v.getSize() == size;
 }
 bool testSizeOfEmptyVector(const char ** pname ){
     *pname = __func__;
