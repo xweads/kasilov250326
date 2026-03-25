@@ -16,6 +16,10 @@ struct Vector {
   };
 }
 template< class T > 
+knk::Vector< T >::isEmpty() const noexcept{
+    return false;
+}
+template< class T > 
 knk::Vector< T >::Vector():
     data_(nullptr),
     size_(0),

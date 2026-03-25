@@ -1,27 +1,37 @@
 #include <iostream>
 using knk::Vector;
-bool test1()
+
+bool testConstructAndDestruct(const char ** pname)
 {
+    *pname = __func__;
     knk::Vector< int > v;
     return true;
 }
-bool test2{
+bool testDefaultVectorIsEmpty(const char ** pname ) 
+{
+    *pname = __func__;
     Vector< int > v;
     return v.isEmpty;
 }
 
 int main() 
 {
-    using test_t=bool(*)();
+    using test_t=bool(*)(const char **);
+    using case_t = std::pair< test_t, const char * >;
     test_t tests[] = {
-        test1,
-        test2
+        {testConstructAndDestruct,"Vector must be default constructable"},
+        {testDefaultVectorIsEmpty,"Default constructed vector must be empty"}
     };
-    constexpr size_t count = sizeof(tests) / sizeof(test_t);
+    constexpr size_t count = sizeof(tests) / sizeof(case_t);
     for ( size_t i=0; i < count ; ++i){
-        bool r = test[i]();
+        const char * testName = nullptr;
+        bool r = test[i](&testName);
         if (!r){
-            std::cout << "Failed: " << i << "\n";
+            ++failed;
+            std::cout << "Failed: " << testName << "\n";
+            std:: cout <<"\t" << tests[i].second << "\n";
         }
     }  
+    std::cout<< "Summary:\n\t " << (count - failed) << "passed\n";
+    std::count << "\t" << count << " total\n";
 }
