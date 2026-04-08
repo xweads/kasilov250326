@@ -49,10 +49,24 @@ void knk::Vector< T >::pushBack(const T & value){
 template < class T >
 T& knk::Vector< T >::at(size_t id)
 {
+    const Vector< T > * cthis = this;
+    const T& cr = cthis->at(id);
+    T& r = const_cast<T&>(cr);
+    return r;
+}
+
+template < class T >
+const T& knk::Vector< T >::at(size_t id) const
+{
     if ( getSize() < id){
-        return data_[id];
+        return (*this)[id];
     }
-    throw std::logic_error("id > size");
+    throw std::out_of_range("id out of bound");
+}
+
+template < class T >
+const T& knk::Vector< T >::operator[](size_t id) noexcept{
+    return data_[id];
 }
 
 template < class T >
