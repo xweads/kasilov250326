@@ -7,7 +7,7 @@ struct Vector {
     public:
     Vector()
     ~Vector();
-    Vecotr(const Vector <T> &rhs)= delete;
+    Vecotr(const Vector <T> &rhs);
     Vector(size_t size, const T & value );
    
 
@@ -21,12 +21,48 @@ struct Vector {
     void pushBack(const T &);
     void popBack();
 
+    T& operator[](size_t id) noexcept;
+    const T& operator[](size_t id) const noexcept;
+    T& at(size_t id);
+    const T& at(size_t id) const;
+
     private:
     T * data;
     size_t size_, capacity_;
     explicit Vector(size_t size);
   };
 }
+template < class T > 
+void knk::Vector< T >::pushBack(const T & value){
+    if ( size_ == capacity_){
+        size_t newCapacity = capacity_ ? 2 * capacity_ : 1;
+        T * newData = new T [newCapacity];
+        for ( size_t i=0; i < size_ ; ++i){
+            newData[i] = data_[i];
+        }
+        delete [] data_;
+        data_ = newData;
+        capacity_ = newCapacity;
+    }
+    data_[size_++] = value;
+}
+template < class T >
+T& knk::Vector< T >::at(size_t id)
+{
+    if ( getSize() < id){
+        return data_[id];
+    }
+    throw std::logic_error("id > size");
+}
+
+template < class T >
+knk::Vector< T >::Vector(const Vector <T> &rhs):
+    Vector(rhs.getSize()){
+        for ( size_t i=0; i < rhs.getSize() ; ++i){
+            data_[i] = rhs.data_[i];
+        }
+    }
+
 template< class T >
 knk::Vector< T >::Vector(size_t size):
     data_(size ? new T [size]: nullptr),
